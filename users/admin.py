@@ -1,6 +1,18 @@
 from django.contrib import admin
 
 # Register your models here.
-from users.models import BankAccount
+from users.models import BankAccount, Operation
 
-admin.site.register(BankAccount)
+
+class AdminBankAccount(admin.ModelAdmin):
+    list_display = ('id', 'user', 'balance')
+
+
+admin.site.register(BankAccount, AdminBankAccount)
+
+
+class AdminOperation(admin.ModelAdmin):
+    list_display = ('amount', 'message', 'sender', 'receiver', 'message')
+
+
+admin.site.register(Operation, AdminOperation)
