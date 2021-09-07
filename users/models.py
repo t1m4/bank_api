@@ -8,9 +8,6 @@ class BankAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     balance = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __str__(self):
-        return f'{self.user}'
-
 
 class Operation(models.Model):
     amount = models.PositiveIntegerField()
@@ -18,6 +15,3 @@ class Operation(models.Model):
     date = models.DateTimeField(default=timezone.now)
     sender = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='sender')
     receiver = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='receiver')
-
-    class Meta:
-        unique_together = ['sender', 'receiver']
