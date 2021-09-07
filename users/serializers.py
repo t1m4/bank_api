@@ -7,7 +7,7 @@ from users.models import BankAccount, Operation
 class BankAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = BankAccount
-        fields = ['user', 'balance']
+        fields = ['id', 'user', 'balance']
 
 
 class OperationSerializer(serializers.ModelSerializer):
