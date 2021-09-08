@@ -8,7 +8,7 @@ from users.models import BankAccount, Operation
 from users.serializers import BankAccountSerializer, TransferSerializer, OperationSerializer
 
 
-class CreateBankAccount(mixins.CreateModelMixin,
+class BankAccountViewSet(mixins.CreateModelMixin,
                         mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
     serializer_class = BankAccountSerializer
@@ -17,7 +17,7 @@ class CreateBankAccount(mixins.CreateModelMixin,
     def get_serializer_class(self):
         if self.action == 'get_transfer_history':
             return OperationSerializer
-        return super(CreateBankAccount, self).get_serializer_class()
+        return super(BankAccountViewSet, self).get_serializer_class()
 
     @action(detail=True, methods=['get'], url_path='transfer_history', url_name='get_history')
     def get_transfer_history(self, request, pk=None):
