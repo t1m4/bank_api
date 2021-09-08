@@ -11,7 +11,7 @@ class BankAccount(models.Model):
 
 class Operation(models.Model):
     amount = models.PositiveIntegerField()
-    message = models.CharField(max_length=100)
+    message = models.CharField(max_length=100, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     sender = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='sender')
     receiver = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='receiver')
