@@ -13,6 +13,12 @@ class BankAccountSerializer(serializers.ModelSerializer):
 class OperationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Operation
+        fields = ['amount', 'message', 'sender', 'receiver', 'date']
+
+
+class TransferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Operation
         fields = ['amount', 'message', 'sender', 'receiver']
 
     def validate(self, data):
@@ -29,4 +35,4 @@ class OperationSerializer(serializers.ModelSerializer):
             self.validated_data['receiver'].balance += amount
             self.validated_data['sender'].save(update_fields=['balance'])
             self.validated_data['receiver'].save(update_fields=['balance'])
-            return super(OperationSerializer, self).save(**kwargs)
+            return super(TransferSerializer, self).save(**kwargs)

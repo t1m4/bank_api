@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from users.models import BankAccount, Operation
-from users.serializers import BankAccountSerializer, OperationSerializer
+from users.serializers import BankAccountSerializer, TransferSerializer, OperationSerializer
 
 
 class CreateBankAccount(mixins.CreateModelMixin,
@@ -28,4 +28,4 @@ class CreateBankAccount(mixins.CreateModelMixin,
 
 
 class TransferView(generics.CreateAPIView):
-    serializer_class = OperationSerializer
+    serializer_class = TransferSerializer
