@@ -1,12 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils import timezone
 
 
 # Create your models here.
 class BankAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    number = models.BigIntegerField()
+    number = models.BigIntegerField(unique=True, db_index=True)
     balance = models.DecimalField(max_digits=10, decimal_places=2)
 
 
