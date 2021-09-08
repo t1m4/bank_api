@@ -5,7 +5,7 @@ from users.models import BankAccount, Operation
 
 
 class AdminBankAccount(admin.ModelAdmin):
-    list_display = ('id', 'user', 'balance')
+    list_display = ('id', 'user', 'balance', 'number')
 
 
 admin.site.register(BankAccount, AdminBankAccount)

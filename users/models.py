@@ -6,6 +6,7 @@ from django.utils import timezone
 # Create your models here.
 class BankAccount(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    number = models.BigIntegerField()
     balance = models.DecimalField(max_digits=10, decimal_places=2)
 
 
