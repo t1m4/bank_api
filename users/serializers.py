@@ -1,13 +1,35 @@
+from random import randint
+
 from django.db import transaction
 from rest_framework import serializers
 
 from users.models import BankAccount, Operation
 
 
+def generate_number():
+    range_start = 10 ** (16 - 1)
+    range_end = (10 ** 16) - 1
+    number = randint(range_start, range_end)
+
+    # check that account exists
+    account = BankAccount.objects.filter(number=number).exists()
+    while account:
+        number = randint(range_start, range_end)
+        account = BankAccount.objects.filter(number=number).exists()
+
+    return number
+
+
 class BankAccountSerializer(serializers.ModelSerializer):
+    number = serializers.IntegerField(read_only=True, default=generate_number())
+
     class Meta:
         model = BankAccount
-        fields = ['id', 'user', 'balance']
+        fields = ['id', 'user', 'balance', 'number']
+
+    def save(self, **kwargs):
+        self.validated_data['number'] = generate_number()
+        return super(BankAccountSerializer, self).save(**kwargs)
 
 
 class OperationSerializer(serializers.ModelSerializer):
