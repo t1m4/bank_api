@@ -6,3 +6,5 @@ sqlparse==0.4.1
 djangorestframework===3.12.4
 django-debug-toolbar==3.2.2
 coverage==5.5
+
+drf-yasg==1.20.0
