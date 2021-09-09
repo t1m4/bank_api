@@ -3,7 +3,7 @@ from decimal import Decimal
 from django.db import transaction
 
 from users.models import BankAccount, Operation
-from users.services.exceptions import SmallBalanceException
+from users.services.exceptions import SmallBalanceException, SenderReceiverEqualException
 
 
 def transfer(sender: BankAccount, receiver: BankAccount, amount: Decimal, message: str):
@@ -13,7 +13,7 @@ def transfer(sender: BankAccount, receiver: BankAccount, amount: Decimal, messag
     if amount > sender.balance:
         raise SmallBalanceException("Sender don't have enough money.", amount, sender.balance)
     if sender == receiver:
-        pass
+        raise SenderReceiverEqualException("Sender and receiver must not be equal.", sender, receiver)
 
     with transaction.atomic():
         sender.balance -= amount
