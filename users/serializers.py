@@ -2,6 +2,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from users.models import BankAccount, Operation
+from users.services import transfer
 
 
 class BankAccountSerializer(serializers.ModelSerializer):
@@ -30,9 +31,5 @@ class TransferSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         amount = self.validated_data['amount']
-        with transaction.atomic():
-            self.validated_data['sender'].balance -= amount
-            self.validated_data['receiver'].balance += amount
-            self.validated_data['sender'].save(update_fields=['balance'])
-            self.validated_data['receiver'].save(update_fields=['balance'])
-            return super(TransferSerializer, self).save(**kwargs)
+        transfer(self.validated_data['sender'], self.validated_data['receiver'], amount)
+        return super(TransferSerializer, self).save(**kwargs)
