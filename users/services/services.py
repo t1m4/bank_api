@@ -6,7 +6,7 @@ from users.models import BankAccount, Operation
 from users.services.exceptions import SmallBalanceException, SenderReceiverEqualException
 
 
-def transfer(sender: BankAccount, receiver: BankAccount, amount: Decimal, message: str):
+def transfer_service(sender: BankAccount, receiver: BankAccount, amount: Decimal, message: str):
     """
     Transfer money from one account to another
     """

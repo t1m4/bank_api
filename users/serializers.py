@@ -1,7 +1,8 @@
+from decimal import Decimal
 from rest_framework import serializers
 
 from users.models import BankAccount, Operation
-from users.services.services import transfer
+from users.services.services import transfer_service
 
 
 class BankAccountSerializer(serializers.ModelSerializer):
@@ -16,10 +17,12 @@ class OperationSerializer(serializers.ModelSerializer):
         fields = ['amount', 'message', 'sender', 'receiver', 'date']
 
 
-class TransferSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Operation
-        fields = ['amount', 'message', 'sender', 'receiver']
+class TransferSerializer(serializers.Serializer):
+    amount = serializers.IntegerField(min_value=0.01)
+    sender = serializers.PrimaryKeyRelatedField(queryset=BankAccount.objects.all())
+    receiver = serializers.PrimaryKeyRelatedField(queryset=BankAccount.objects.all())
+    message = serializers.CharField(max_length=100, required=False, default='')
+
 
     def validate(self, data):
         if data['amount'] > data['sender'].balance:
@@ -27,9 +30,3 @@ class TransferSerializer(serializers.ModelSerializer):
         if data['sender'] == data['receiver']:
             raise serializers.ValidationError("Sender and receiver must not be equal.")
         return data
-
-    def save(self, **kwargs):
-        instance = transfer(self.validated_data['sender'], self.validated_data['receiver'],
-                            self.validated_data['amount'],
-                            self.validated_data['message'])
-        return instance
